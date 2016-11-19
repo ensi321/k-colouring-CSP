@@ -12,6 +12,7 @@ import orderings as stu_orderings
 # E is a list of tuples (v1, v2) which represent edges from v1 to v2
 # k ia a number of colouring
 def kColoring(V, E, k):
+    integrityCheck(V, E)
     k_color_csp = CSP("kColoring")
     # This is the colours, we use integer to label a colour
     domain = [i for i in range(k)]
@@ -55,6 +56,23 @@ def generateSatisfyingTuples(domain):
 
     return result
 
+# Check if V and E are alright
+def integrityCheck(V, E):
+    # Check if all v in V are unique
+    if len(V) != len(set(V)):
+        print("There are duplicates in V please go check")
+        sys.exit(1)
+    # Check if all e in E are unique
+    if len(E) != len(set(E)):
+        print("There are duplicates in E please go check")
+        sys.exit(1)
+
+    # Check if both e1 and e2 are in V for all e = (v1, v2)
+    for e in E:
+        if (e[0] not in V) or (e[1] not in V):
+            print("The edge " + str(e) + " is not valid")
+            sys.exit(1)            
+
 
 def main():
     # Let's try a simple 3-colouring
@@ -65,7 +83,6 @@ def main():
     csp, var_array = kColoring(V, E, k)
     solver = BT(csp)
     solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
-    print(var_array)
     # Let's try the example from the CSP lecture slide 60
     print("=================Test 2=====================")
     V = ["Western Australia", "Northern Territory", "South Australia", "Queensland", "New South Wales", "Victoria", "Tasmania"]
@@ -74,7 +91,6 @@ def main():
     csp, var_array = kColoring(V, E, k)
     solver = BT(csp)
     solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
-    print(var_array)
 
 
 if __name__=="__main__":
