@@ -6,7 +6,7 @@ propagator == a function with the following template
     propagator(csp, newly_instantiated_variable=None)
         ==> returns (True/False, [(Variable, Value), (Variable, Value) ...])
 
-Consider implementing propagators for forward cehcking or GAC as a course project!        
+Consider implementing propagators for forward cehcking or GAC as a course project!
 
 '''
 
@@ -26,4 +26,30 @@ def prop_BT(csp, newVar=None):
                 return False, []
     return True, []
 
+def prop_GAC(csp, newVar=None):
+    '''Performs GAC on a given CSP.
+    Returns (has_DWO, pruned_values).'''
+    if not newVar:
+        queue = csp.get_all_cons()
+    else:
+        queue = csp.get_cons_with_var(newVar)
 
+    prune = []
+    while len(queue) > 0:
+        constraint = queue.pop(0)
+        # Prepare a list of variable-value tuples that need to be pruned
+        var_val_t = [
+            (var, val) for var in constraint.get_scope()
+                for val in var.cur_domain()
+                    if not constraint.has_support(var, val)]
+
+        for var, val in var_val_t:
+            prune.append((var, val))
+            var.prune_value(val)
+            if len(var.cur_domain()) == 0:
+                # DWO, exit
+                return (False, prune)
+            else:
+                # Continue
+                queue += [other_constraint for other_constraint in csp.get_cons_with_var(var) if other_constraint not in queue]
+    return (True, prune)
