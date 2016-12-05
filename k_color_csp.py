@@ -5,6 +5,7 @@ import math
 import sys
 from cspbase import *
 from propagators import *
+from heuristic_tests import *
 import itertools
 import orderings as stu_orderings
 
@@ -75,23 +76,14 @@ def integrityCheck(V, E):
 
 
 def main():
-    # Let's try a simple 3-colouring
-    print("================Test 1 =====================")
-    V = ['A', 'B', 'C', 'D', 'E', 'F']
-    E = [('A', 'B'), ('A', 'C'), ('B', 'F'), ('B', 'C'), ('C', 'D'), ('C', 'E'), ('C', 'F'), ('E', 'F')]
-    k = 3
-    csp, var_array = kColoring(V, E, k)
-    solver = BT(csp)
-    solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
-    # Let's try the example from the CSP lecture slide 60
-    print("=================Test 2=====================")
-    V = ["Western Australia", "Northern Territory", "South Australia", "Queensland", "New South Wales", "Victoria", "Tasmania"]
-    E = [("Western Australia", "Northern Territory"), ("Western Australia", "South Australia"), ("Northern Territory", "South Australia"), ("Northern Territory", "Queensland"), ("South Australia", "Queensland"), ("South Australia", "New South Wales"), ("South Australia", "Victoria"), ("Victoria", "New South Wales")]
-    k = 3
-    csp, var_array = kColoring(V, E, k)
-    solver = BT(csp)
-    solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
 
+    print("================ Heuristic Testing =====================")
+    for i in range(1, len(tests) + 1):
+        print("================ Test " + str(i) + " =====================")
+        test = tests[i]
+        csp, var_array = kColoring(test[0], test[1], test[2])
+        solver = BT(csp)
+        solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
 
 if __name__=="__main__":
     main()
