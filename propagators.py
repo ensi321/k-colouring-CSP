@@ -26,6 +26,30 @@ def prop_BT(csp, newVar=None):
                 return False, []
     return True, []
 
+def prop_FC(csp, newVar=None):
+    '''
+    PRE: csp; newVar is assigned
+    POST: no unassigned otherVar related to newVar by a constraint has an inconsistent value in its domain
+    '''
+    if not newVar:
+        # Only operate on an assigned variable
+        return True, []
+
+    constraints = csp.get_cons_with_var(newVar)
+    prune = []
+    for constraint in constraints:
+        prune = [
+            (var, val) for var in constraint.get_unasgn_vars()
+                for val in var.cur_domain()
+                    if not constraint.has_support(var, val)]
+
+        for var, val in prune:
+            var.prune_value(val)
+            if len(var.cur_domain()) == 0:
+                return False, prune
+
+    return True, prune
+
 def prop_GAC(csp, newVar=None):
     '''Performs GAC on a given CSP.
     Returns (has_DWO, pruned_values).'''
