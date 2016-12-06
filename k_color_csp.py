@@ -5,7 +5,7 @@ import math
 import sys
 from cspbase import *
 from propagators import *
-from heuristic_tests import *
+from graphs import *
 import itertools
 import orderings as stu_orderings
 
