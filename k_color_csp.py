@@ -79,7 +79,7 @@ def main():
 
     TESTED_PROPS = (("BT", prop_BT), ("FC", prop_FC), ("GAC", prop_GAC))
     for K in [3, 4]:
-        print("================ Heuristic Testing =====================")
+        print("================ Heuristic Testing (K = " + str(K) + ") =====================\n")
         for i in range(1, len(tests) + 1):
             print("================ Test " + str(i) + " =====================")
             test = tests[i]
@@ -87,7 +87,7 @@ def main():
             solver = BT(csp)
             solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
 
-        print("================ Propagator Testing =====================")
+        print("================ Propagator Testing (K = " + str(K) + ") =====================\n")
         for test_idx, i in enumerate(range(1, len(tests) + 1)):
             print("================ Test " + str(i) + " =====================")
             for prop_idx, (prop_name, prop) in enumerate(TESTED_PROPS):
