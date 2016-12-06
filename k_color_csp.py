@@ -79,24 +79,27 @@ def main():
 
     TESTED_PROPS = (("BT", prop_BT), ("FC", prop_FC), ("GAC", prop_GAC))
     for K in [3, 4]:
-        print("================ Heuristic Testing (K = " + str(K) + ") =====================\n")
+        print("=================== Heuristic Testing (K = " + str(K) + ") ========================\n")
         for i in range(1, len(tests) + 1):
             print("================ Test " + str(i) + " =====================")
             test = tests[i]
             csp, var_array = kColoring(test[0], test[1], K)
             solver = BT(csp)
             solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
-
-        print("================ Propagator Testing (K = " + str(K) + ") =====================\n")
+            print("\n")
+        print("\n")
+        print("===================== Propagator Testing (K = " + str(K) + ") ========================\n")
         for test_idx, i in enumerate(range(1, len(tests) + 1)):
             print("================ Test " + str(i) + " =====================")
             for prop_idx, (prop_name, prop) in enumerate(TESTED_PROPS):
-                print("================ Propagator {} =====================".format(prop_name))
+                print("~~~~~~~~~~~ Propagator {} ~~~~~~~~~~~~".format(prop_name))
                 test = tests[i]
                 csp, var_array = kColoring(test[0], test[1], K)
                 solver = BT(csp)
                 solver.bt_search(prop, stu_orderings.ord_sequential, stu_orderings.val_arbitrary)
                 print("Summary", len(test[1]), prop_name, "made", solver.nDecisions, "assignments and", solver.nPrunings, "prunings in", solver.runtime)
+            print("\n")
+        print("\n")
 
 if __name__=="__main__":
     main()
