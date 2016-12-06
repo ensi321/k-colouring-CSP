@@ -1,4 +1,4 @@
 Run the following command in the shell:
 python3 k_color_csp.py
 
-Note the orderings.py is from Yikhei Chan's submission for csc384 A2. cspbase.py is given as a starter code in csc384 A2. 
+Note the orderings.py is part of Yikhei Chan's submission for csc384 A2. cspbase.py is given as a starter code in csc384 A2. 
