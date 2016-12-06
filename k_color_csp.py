@@ -72,18 +72,31 @@ def integrityCheck(V, E):
     for e in E:
         if (e[0] not in V) or (e[1] not in V):
             print("The edge " + str(e) + " is not valid")
-            sys.exit(1)            
+            sys.exit(1)
 
 
 def main():
 
-    print("================ Heuristic Testing =====================")
-    for i in range(1, len(tests) + 1):
-        print("================ Test " + str(i) + " =====================")
-        test = tests[i]
-        csp, var_array = kColoring(test[0], test[1], test[2])
-        solver = BT(csp)
-        solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
+    TESTED_PROPS = (("BT", prop_BT), ("FC", prop_FC), ("GAC", prop_GAC))
+    for K in [3, 4]:
+        print("================ Heuristic Testing =====================")
+        for i in range(1, len(tests) + 1):
+            print("================ Test " + str(i) + " =====================")
+            test = tests[i]
+            csp, var_array = kColoring(test[0], test[1], K)
+            solver = BT(csp)
+            solver.bt_search(prop_BT, stu_orderings.ord_dh, stu_orderings.val_arbitrary)
+
+        print("================ Propagator Testing =====================")
+        for test_idx, i in enumerate(range(1, len(tests) + 1)):
+            print("================ Test " + str(i) + " =====================")
+            for prop_idx, (prop_name, prop) in enumerate(TESTED_PROPS):
+                print("================ Propagator {} =====================".format(prop_name))
+                test = tests[i]
+                csp, var_array = kColoring(test[0], test[1], K)
+                solver = BT(csp)
+                solver.bt_search(prop, stu_orderings.ord_sequential, stu_orderings.val_arbitrary)
+                print("Summary", len(test[1]), prop_name, "made", solver.nDecisions, "assignments and", solver.nPrunings, "prunings in", solver.runtime)
 
 if __name__=="__main__":
     main()
