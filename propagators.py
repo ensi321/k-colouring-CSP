@@ -38,7 +38,7 @@ def prop_FC(csp, newVar=None):
     constraints = csp.get_cons_with_var(newVar)
     prune = []
     for constraint in constraints:
-        prune = [
+        prune += [
             (var, val) for var in constraint.get_unasgn_vars()
                 for val in var.cur_domain()
                     if not constraint.has_support(var, val)]
